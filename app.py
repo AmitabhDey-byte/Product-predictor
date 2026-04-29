@@ -3,7 +3,7 @@ import pandas as pd
 import streamlit as st
 import joblib
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.metrics.pairwise import euclidean_distances
 
 st.set_page_config(page_title="Product Predictor", layout="wide")
 st.title("Product Predictor Dashboard")
@@ -59,9 +59,9 @@ with col2:
         scaler_data = scaler.fit_transform(features_ingest)
 
         user_scaled = scaler.transform(features)
-        similarity = cosine_similarity(user_scaled, scaler_data)
+        distances = euclidean_distances(user_scaled, scaler_data)[0]
 
-        top_indices = similarity[0].argsort()[-15:][::-1]
+        top_indices = distances.argsort()[:15].tolist()
         candidates= ingest.iloc[top_indices].copy()
 
         candidates_features= candidates[['discounted_price','discounted_ratio','log_rating_count','price_diff','actual_price']]
@@ -75,7 +75,7 @@ with col2:
         final_recommendations = good_products.head(5)
 
         if len(final_recommendations)>0:
-         st.dataframe(final_recommendations[['product_name','discounted_price','rating','rating_count']])
+         st.dataframe(final_recommendations[['product_name','actual_price','discounted_price','rating','rating_count']])
         else:
          st.warning("No strong recommendations found")
 

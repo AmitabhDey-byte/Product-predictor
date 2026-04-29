@@ -58,7 +58,7 @@ with col2:
         scaler = StandardScaler()
         scaler_data = scaler.fit_transform(features_ingest)
 
-        user_scaled = scaler.transform(features_ingest)
+        user_scaled = scaler.transform(features)
         similarity = cosine_similarity(user_scaled, scaler_data)
 
         top_indices = similarity[0].argsort()[-15:][::-1]

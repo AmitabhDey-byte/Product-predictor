@@ -69,10 +69,11 @@ print("Best Score:", grid.best_score_)
 print("Accuracy:", grid.score(X_test2, Y_test2)*100, "%")
 # %%
 joblib.dump(rf, 'model2.pkl')
+
+rf.fit(X_train2, Y_train2)
 # %%
 model2 = joblib.load("model2.pkl")
 # %%
-model2.fit(X_train2, Y_train2)
 # %%
 Y_prediction1 = model1.predict(X_test2)
 Y_prediction2 = model2.predict(X_test2)
